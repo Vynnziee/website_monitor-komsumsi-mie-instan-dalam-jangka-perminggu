@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Limit Konsumsi Sodium dalam Mie Instan Jangka Perminggu</title>
+    <style>
+        /* Inline CSS agar warna sesuai palette 0C3B5D */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0c3b5d;
+            color: #f0f0f0;
+            line-height: 1.6;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #0c3b5d;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            background-color: #143a60;
+            /* sedikit lebih terang untuk kontras */
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .section {
+            background-color: #1a4e82;
+            /* biru gelap */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            color: #e0e7ff;
+        }
+
+        .description {
+            background-color: #0c3b5d;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 5px solid #d9b312;
+            /* aksen kuning */
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .form-card,
+        .chart-container {
+            background-color: #0c3b5d;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #1a4e82;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #f0f0f0;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #d9b312;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #143a60;
+            color: #f0f0f0;
+            transition: border-color 0.3s;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #d9b312;
+            outline: none;
+            background-color: #1a4e82;
+        }
+
+        /* Biar dropdown bisa scroll jika banyak pilihan */
+        select {
+            max-height: 160px;
+            overflow-y: auto;
+        }
+
+        button {
+            background-color: #d9b312;
+            color: #0c3b5d;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        button:hover {
+            background-color: #b29410;
+            color: #fff;
+        }
+
+        #logoutBtn {
+            background-color: #4a657a;
+            color: #fff;
+        }
+
+        #logoutBtn:hover {
+            background-color: #3b4f61;
+        }
+
+        .result-card {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #d9b312;
+            background-color: #143a60;
+            color: #e0e7ff;
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        .result-card p {
+            margin-bottom: 12px;
+        }
+
+        .result-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #d9b312;
+            padding-bottom: 5px;
+        }
+
+        /* Status colors */
+        .safe {
+            background-color: rgba(76, 175, 80, 0.15);
+            border-left: 6px solid #4caf50;
+            color: #d9f99d;
+        }
+
+        .warning {
+            background-color: rgba(255, 235, 59, 0.15);
+            border-left: 6px solid #ffeb3b;
+            color: #fff9c4;
+        }
+
+        .danger {
+            background-color: rgba(244, 67, 54, 0.15);
+            border-left: 6px solid #f44336;
+            color: #ffcccb;
+        }
+
+        footer {
+            background-color: #0c3b5d;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            margin-top: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Limit Konsumsi Sodium dalam Mie Instan Jangka Perminggu</h1>
+        <p>Monitor kesehatan Anda dengan mudah!</p>
+    </header>
+
+    <main>
+        <div id="loginSection" class="section">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="username">Username:</label>
+                <input type="text" id="username" required />
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" required />
+
+                <button type="submit">Login</button>
+                <button type="button" id="registerBtn">Daftar</button>
+            </form>
+        </div>
+
+        <div id="mainSection" class="section" style="display: none;">
+            <div class="description">
+                <h2>Bahaya Over Sodium Menurut WHO</h2>
+                <p>Menurut Organisasi Kesehatan Dunia (WHO), konsumsi sodium yang berlebihan dapat meningkatkan risiko
+                    hipertensi, penyakit jantung, stroke, dan masalah kesehatan lainnya. WHO merekomendasikan batas
+                    konsumsi sodium harian kurang dari 2.000 mg untuk orang dewasa, dan lebih rendah untuk anak-anak.
+                    Mie instan sering tinggi sodium, jadi penting untuk memantau konsumsinya.</p>
+            </div>
+
+            <div class="content-grid">
+                <form id="sodiumForm" class="form-card">
+                    <label for="mie">Pilih Mie Instan:</label>
+                    <select id="mie" required>
+                        <option value="">-- Pilih Mie Instan --</option>
+                        <option value="indomie_goreng">Indomie Goreng (1000 mg sodium per bungkus)</option>
+                        <option value="indomie_rebus">Indomie Rebus (900 mg sodium per bungkus)</option>
+                        <option value="mie_sedaap_goreng">Mie Sedaap Goreng (1100 mg sodium per bungkus)</option>
+                        <option value="mie_sedaap_soto">Mie Sedaap Soto (950 mg sodium per bungkus)</option>
+                        <option value="sarimi_goreng">Sarimi Goreng (800 mg sodium per bungkus)</option>
+                        <option value="sarimi_kari">Sarimi Kari (850 mg sodium per bungkus)</option>
+                        <option value="supermi_ayam_bawang">Supermi Ayam Bawang (1200 mg sodium per bungkus)</option>
+                        <option value="supermi_soto">Supermi Soto (1000 mg sodium per bungkus)</option>
+                        <option value="pop_mie_ayam">Pop Mie Ayam (1300 mg sodium per bungkus)</option>
+                        <option value="pop_mie_kari">Pop Mie Kari (1250 mg sodium per bungkus)</option>
+                        <option value="mie_gelas_abc_soto">Mie Gelas ABC Soto (900 mg sodium per bungkus)</option>
+                        <option value="mie_gelas_abc_kari">Mie Gelas ABC Kari (950 mg sodium per bungkus)</option>
+                        <option value="mie_sukses_ayam_bawang">Mie Sukses Ayam Bawang (1100 mg sodium per bungkus)
+                        </option>
+                        <option value="mie_sukses_soto">Mie Sukses Soto (1050 mg sodium per bungkus)</option>
+                        <option value="mie_burung_dara_goreng">Mie Burung Dara Goreng (800 mg sodium per bungkus)
+                        </option>
+                        <option value="mie_burung_dara_soto">Mie Burung Dara Soto (850 mg sodium per bungkus)</option>
+                        <option value="mie_gacoan_pedas">Mie Gacoan Pedas (1400 mg sodium per bungkus)</option>
+                        <option value="mie_gacoan_ayam">Mie Gacoan Ayam (1300 mg sodium per bungkus)</option>
+                        <option value="nissin_cup_noodles">Nissin Cup Noodles (1000 mg sodium per bungkus)</option>
+                        <option value="maruchan_ramen">Maruchan Ramen (1200 mg sodium per bungkus)</option>
+                    </select>
+
+                    <label for="jumlah">Jumlah Bungkus yang Ingin Dimakan:</label>
+                    <input type="number" id="jumlah" min="1" required />
+
+                    <label for="umur">Umur (tahun):</label>
+                    <input type="number" id="umur" min="1" required />
+
+                    <button type="submit">Hitung Limit</button>
+                    <button type="button" id="logoutBtn">Logout</button>
+                </form>
+
+                <div class="chart-container">
+                    <canvas id="sodiumChart"></canvas>
+                </div>
+            </div>
+
+            <div id="result" class="result-card"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; Monitor Kesehatan Mie Instan. Dibuat untuk edukasi kesehatan.</p>
+        <p>&copy; Kelompok 4</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
